@@ -1,8 +1,31 @@
 """FastAPI entry point for the sentiment classification HTTP API."""
 
-from fastapi import FastAPI
+from contextlib import asynccontextmanager
 
-app = FastAPI()
+from fastapi import FastAPI
+from pydantic import BaseModel, Field
+
+from app.model import SentimentModel
+
+
+@asynccontextmanager
+async def lifespan(app: FastAPI):
+    app.state.model = SentimentModel()
+    yield
+
+
+app = FastAPI(lifespan=lifespan)
+
+
+class PredictRequest(BaseModel):
+    text: str = Field(..., min_length=1, max_length=2000)
+
+
+class PredictResponse(BaseModel):
+    label: str
+    score: float
+    latency_ms: int
+    model_version: str
 
 
 @app.get("/health")
@@ -12,3 +35,9 @@ def health() -> dict[str, str]:
         "version": "0.1.0",
         "service": "sentiment-api",
     }
+
+
+@app.post("/predict", response_model=PredictResponse)
+def predict(request: PredictRequest) -> PredictResponse:
+    result = app.state.model.predict(request.text)
+    return PredictResponse(**result)
