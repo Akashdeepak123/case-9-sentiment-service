@@ -1,15 +1,25 @@
-<<<<<<< HEAD
+---
+title: Sentiment Service
+emoji: 👀
+colorFrom: indigo
+colorTo: pink
+sdk: docker
+app_port: 7860
+pinned: false
+license: mit
+---
+
 # Sentiment Service
 
-## Live Demo
+> 🌐 **Live Demo:** https://akashdeepak1-sentiment-service.hf.space *(coming live after build completes)*
+>
+> 📺 **Demo Video:** coming with submission
 
-**Production:** `https://sentiment-api.onrender.com` — placeholder; replace with your service URL after the first Render deploy.
-
-A production-minded sentiment classification service with evaluation, drift detection, and CI.
+A production-minded sentiment classification service with structured logging, evaluation harness, and CI that blocks regressions.
 
 ## Status
 
-Work in progress — building toward demo submission
+Work in progress — building toward demo submission.
 
 ## Run locally (Docker-first — recommended)
 
@@ -23,10 +33,9 @@ docker compose run --rm tests
 
 Open http://localhost:8000/docs for the interactive API.
 
-## Run locally (without Docker — Linux/Intel Mac only)
+## Run locally (without Docker — Linux / Intel Mac only)
 
-Apple Silicon Macs may hit known transformers + Apple Silicon issues.
-Use Docker on Apple Silicon. Otherwise:
+Apple Silicon Macs may hit known transformers + Apple Silicon shutdown issues. Use Docker on Apple Silicon. Otherwise:
 
 ```bash
 python3.11 -m venv venv
@@ -35,16 +44,18 @@ pip install -r requirements.txt
 python -m pytest -v
 python -m uvicorn app.main:app --reload
 ```
-=======
----
-title: Sentiment Service
-emoji: 👀
-colorFrom: indigo
-colorTo: pink
-sdk: docker
-pinned: false
-license: mit
----
 
-Check out the configuration reference at https://huggingface.co/docs/hub/spaces-config-reference
->>>>>>> 9b7b35296e4168dba7e499dc916ff2df04f3451c
+## Stack
+
+| Layer | Choice |
+|---|---|
+| API | FastAPI |
+| Model | DistilBERT (HuggingFace) |
+| Container | Docker |
+| Logging | SQLite |
+| Deploy | Hugging Face Spaces |
+| CI | GitHub Actions |
+
+## License
+
+MIT
