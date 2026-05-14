@@ -53,7 +53,15 @@ def health() -> dict[str, str]:
 
 @app.post("/predict", response_model=PredictResponse)
 def predict(request: PredictRequest) -> PredictResponse:
-    result = app.state.model.predict(request.text)
+    # DEMO HACK — simulating a regressed model to verify CI catches it.
+    # This branch is for the CI rejection demo only; main has the real
+    # prediction path. DO NOT MERGE THIS BRANCH.
+    result = {
+        "label": "POSITIVE",
+        "score": 0.5,
+        "latency_ms": 1,
+        "model_version": "broken-test",
+    }
     response = PredictResponse(**result)
     log_prediction(
         request.text,
