@@ -86,3 +86,49 @@ A model in production is a service. Services have on-call. On-call
 needs runbooks. This is the runbook. Most "ML in production" failures
 don't look like ML failures — they look like ops failures. Treat them
 like ops failures.
+
+
+## 7. On the adversarial guard's limits — what's enough vs. what's done
+
+The shipped `app/input_guard.py` is a heuristic regex layer covering 
+known prompt-injection patterns, length attacks, non-ASCII heavy 
+inputs, repetition spam, and all-caps. It will catch the obvious 
+class of attacks — and miss novel phrasings every week.
+
+**Why ship this anyway:** the regex layer is cheap (zero ms), 
+transparent (an engineer can read every rule), and catches the bulk 
+of low-effort attacks. The interesting question isn't whether to ship 
+it — it's what comes next.
+
+**The production layered defense:**
+
+1. **Layer 1 (built):** Heuristic regex. Cheap, transparent, catches 
+   known patterns. Update with new patterns weekly via PRs.
+
+2. **Layer 2 (designed):** Fine-tuned classifier like 
+   `protectai/deberta-v3-base-prompt-injection-v2` — a model whose 
+   job is "is this a prompt injection?" Run alongside the heuristic. 
+   ~50 ms latency cost.
+
+3. **Layer 3 (designed):** Output filtering. After the model 
+   responds, check whether the response contains anything that looks 
+   like the system prompt being leaked. Catches injections that got 
+   past 1 and 2.
+
+4. **Layer 4 (designed):** Rate-limiting per source. If 5+ 
+   injection-flagged inputs come from one IP in 10 minutes, throttle 
+   that source. Most injection attempts come in bursts.
+
+5. **Layer 5 (operational):** Sample flagged inputs into a weekly 
+   review queue. Human eyeballs catch novel patterns to feed back into 
+   Layer 1.
+
+The cost-benefit: Layer 1 is 60 lines of code and blocks 70% of 
+script-kiddie attacks. Layer 2 is another model and ~50ms latency for 
+maybe +15% coverage. Layers 3-5 are the slope from "demo" to 
+"production." Knowing which layer to be on at each stage of a 
+product's growth is the engineering call.
+
+**This service is at Layer 1.** That's the right place for a 
+demonstration. A real production service serving real users would be 
+on Layers 1-4 from day one and Layer 5 by month three.

@@ -11,15 +11,34 @@ Runs heuristic checks on incoming text BEFORE the model sees it. Detects:
 import re
 
 PROMPT_INJECTION_PATTERNS = [
+    # Override-style instructions
     r"ignore\s+(\w+\s+){0,3}(instructions?|prompts?|prior|previous|above|context)",
-    r"disregard\s+(the\s+)?(above|previous|prior)",
-    r"you\s+are\s+now\s+(a|an|going)",
-    r"new\s+instructions?:",
+    r"disregard\s+(the\s+)?(above|previous|prior|prompt|instructions?)",
+    r"forget\s+(everything|all|previous|your\s+instructions?)",
+    
+    # Role-override attempts
+    r"you\s+are\s+now\s+(a|an|going|in)",
+    r"act\s+as\s+(a|an|if|though)",
+    r"pretend\s+(to\s+be|you\s+are)",
+    r"new\s+(instructions?|rules?|persona|role):",
+    
+    # System prompt extraction
+    r"reveal\s+(your|the)\s+(system|hidden|secret|original|initial)\s+(prompt|instructions?|message)",
+    r"what\s+(are|were)\s+(your|the)\s+(original|initial|system)\s+(instructions?|prompts?)",
+    r"print\s+(your|the)\s+(prompt|instructions?|system\s+message)",
+    r"output\s+(your|the)\s+(initial|system|hidden|original)",
+    r"repeat\s+(everything|all|the)\s+(above|before|prior)",
+    
+    # Jailbreak markers
+    r"jailbreak|DAN\s+mode|developer\s+mode|admin\s+mode",
+    
+    # Tag injection
+    r"</?\s*(system|user|assistant|prompt|instruction|context)\s*/?\s*>",
+    r"\[\s*(system|admin|root|sudo)\s*\]",
+    r"```\s*(system|admin|sudo)",
+    
+    # Common payload starters
     r"system\s*[:>]",
-    r"forget\s+(everything|all|previous)",
-    r"</?(system|user|assistant)>",
-    r"```\s*system",
-    r"act\s+as\s+(a|an|if)",
 ]
 
 PROMPT_INJECTION_RE = re.compile("|".join(PROMPT_INJECTION_PATTERNS), re.IGNORECASE)
