@@ -18,6 +18,9 @@ COPY app/ ./app/
 COPY tests/ ./tests/
 COPY conftest.py ./
 
+VOLUME /app/data
+ENV LOG_DB_PATH=/app/data/logs.db
+
 EXPOSE 8000
 
 HEALTHCHECK --interval=30s --timeout=10s --start-period=120s --retries=3 \

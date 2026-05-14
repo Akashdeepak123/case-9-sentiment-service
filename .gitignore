@@ -14,7 +14,8 @@ env/
 .env.*
 !.env.example
 
-# Local databases
+# Local databases and mounted log data
+data/
 *.db
 *.sqlite
 *.sqlite3

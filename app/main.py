@@ -5,11 +5,13 @@ from contextlib import asynccontextmanager
 from fastapi import FastAPI
 from pydantic import BaseModel, ConfigDict, Field
 
+from app.logging_setup import init_db, log_prediction
 from app.model import SentimentModel
 
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
+    init_db()
     app.state.model = SentimentModel()
     yield
 
@@ -41,4 +43,12 @@ def health() -> dict[str, str]:
 @app.post("/predict", response_model=PredictResponse)
 def predict(request: PredictRequest) -> PredictResponse:
     result = app.state.model.predict(request.text)
-    return PredictResponse(**result)
+    response = PredictResponse(**result)
+    log_prediction(
+        request.text,
+        response.label,
+        response.score,
+        response.latency_ms,
+        response.model_version,
+    )
+    return response

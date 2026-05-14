@@ -4,6 +4,8 @@ services:
     container_name: sentiment-api
     ports:
       - "8000:8000"
+    volumes:
+      - ./data:/app/data
     environment:
       - TOKENIZERS_PARALLELISM=false
     healthcheck:
