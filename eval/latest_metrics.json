@@ -1,0 +1,10 @@
+{
+  "model_version": "distilbert-sst2-v1",
+  "n_examples": 30,
+  "accuracy": 0.9667,
+  "f1_macro": 0.9666,
+  "precision_macro": 0.9688,
+  "recall_macro": 0.9667,
+  "latency_p50_ms": 19,
+  "latency_p95_ms": 28
+}

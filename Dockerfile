@@ -16,6 +16,7 @@ RUN pip install --no-cache-dir -r requirements.txt
 
 COPY app/ ./app/
 COPY tests/ ./tests/
+COPY eval/ ./eval/
 COPY conftest.py ./
 
 VOLUME /app/data
