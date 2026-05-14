@@ -1,0 +1,50 @@
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+*.pyc
+
+# Virtual environments
+venv/
+.venv/
+env/
+
+# Environment and secrets
+.env
+.env.*
+!.env.example
+
+# Local databases
+*.db
+*.sqlite
+*.sqlite3
+
+# Testing
+.pytest_cache/
+.coverage
+htmlcov/
+.tox/
+.nox/
+
+# Type checkers / linters (common local artifacts)
+.mypy_cache/
+.ruff_cache/
+
+# Build / packaging
+*.egg-info/
+*.egg
+dist/
+build/
+*.whl
+
+# IDE and OS
+.DS_Store
+.vscode/
+.idea/
+
+# Logs and runtime output
+logs/
+*.log
+
+# Jupyter
+.ipynb_checkpoints/
