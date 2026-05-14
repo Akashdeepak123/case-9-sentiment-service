@@ -31,6 +31,17 @@ class PredictResponse(BaseModel):
     model_version: str
 
 
+@app.get("/")
+def root() -> dict:
+    """Root route — friendly landing for visitors."""
+    return {
+        "service": "sentiment-api",
+        "docs": "/docs",
+        "health": "/health",
+        "predict": "/predict (POST)",
+    }
+
+
 @app.get("/health")
 def health() -> dict[str, str]:
     return {
