@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # Sentiment Service
 
 ## Live Demo
@@ -34,3 +35,16 @@ pip install -r requirements.txt
 python -m pytest -v
 python -m uvicorn app.main:app --reload
 ```
+=======
+---
+title: Sentiment Service
+emoji: 👀
+colorFrom: indigo
+colorTo: pink
+sdk: docker
+pinned: false
+license: mit
+---
+
+Check out the configuration reference at https://huggingface.co/docs/hub/spaces-config-reference
+>>>>>>> 9b7b35296e4168dba7e499dc916ff2df04f3451c
