@@ -1,5 +1,9 @@
 # Sentiment Service
 
+## Live Demo
+
+**Production:** `https://sentiment-api.onrender.com` — placeholder; replace with your service URL after the first Render deploy.
+
 A production-minded sentiment classification service with evaluation, drift detection, and CI.
 
 ## Status
