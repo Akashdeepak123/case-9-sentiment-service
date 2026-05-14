@@ -12,7 +12,9 @@ license: mit
 # Sentiment Service
 
 > 🌐 **Live Demo:** https://akashdeepak1-sentiment-service.hf.space *(coming live after build completes)*
->
+
+[![CI](https://github.com/Akashdeepak123/case-9-sentiment-service/actions/workflows/ci.yml/badge.svg)](https://github.com/Akashdeepak123/case-9-sentiment-service/actions/workflows/ci.yml)
+
 > 📺 **Demo Video:** coming with submission
 
 A production-minded sentiment classification service with structured logging, evaluation harness, and CI that blocks regressions.
@@ -55,6 +57,19 @@ python -m uvicorn app.main:app --reload
 | Logging | SQLite |
 | Deploy | Hugging Face Spaces |
 | CI | GitHub Actions |
+
+## Evaluation
+
+The model is evaluated against a held-out 30-sample test set on every
+PR. CI fails if F1 (macro) drops more than 2 percentage points from the
+committed baseline.
+
+```bash
+# Run eval inside the container
+docker compose run --rm sentiment-api python eval/run_eval.py
+```
+
+Baseline metrics live in eval/baseline_metrics.json and are committed.
 
 ## License
 
